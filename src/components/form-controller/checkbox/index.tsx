@@ -35,13 +35,14 @@ export const FormCheckbox = <T extends Record<string, unknown>>({
       render={({ field: { onChange, value }, formState: { errors } }) => (
         <FormGroup>
           <FormControlLabel
+          
             id={name}
             onChange={onChange}
             checked={value}
-            control={<Checkbox   />}
+            control={<Checkbox     />}
             label={label}
           />
-          {!!errors[name] && <FormHelperText>required</FormHelperText>}
+          {!!errors[name] && <FormHelperText sx={{color:"#d32f2f"}} >Required</FormHelperText>}
         </FormGroup>
       )}
     />
