@@ -2,7 +2,6 @@ import {
   Checkbox,
   CheckboxProps,
   FormControlLabel,
-  FormGroup,
   FormHelperText,
 } from "@mui/material";
 import {
@@ -33,7 +32,7 @@ export const FormCheckbox = <T extends Record<string, unknown>>({
       name={name}
       rules={rest?.rules}
       render={({ field: { onChange, value }, formState: { errors } }) => (
-        <FormGroup>
+        <>
           <FormControlLabel
           
             id={name}
@@ -43,7 +42,7 @@ export const FormCheckbox = <T extends Record<string, unknown>>({
             label={label}
           />
           {!!errors[name] && <FormHelperText sx={{color:"#d32f2f"}} >Required</FormHelperText>}
-        </FormGroup>
+        </>
       )}
     />
   );

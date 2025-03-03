@@ -56,7 +56,7 @@ export const FormSelect = <T extends Record<string, unknown>>({
               {...rest}
             >
               {options?.map((e)=>(
-                <MenuItem value={e?.value}>{e?.label}</MenuItem>
+                <MenuItem key={e?.value} value={e?.value}>{e?.label}</MenuItem>
               ))}
               
            
