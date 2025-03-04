@@ -64,6 +64,7 @@ const Step1 = () => {
           <FormInput
             label="Conviction Country"
             rules={formValidation["country"]}
+            disabled
             startAdornment={
               <InputAdornment position="start">
                 <FlagIcon />
