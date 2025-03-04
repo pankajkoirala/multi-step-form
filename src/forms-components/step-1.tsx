@@ -12,6 +12,7 @@ import { formValidation } from "../schema/formValidation";
 const Step1 = () => {
   const methods = useFormContext();
 
+
   const brandOptions = Options?.map((e) => ({
     label: e?.name,
     value: e?.name,
@@ -21,15 +22,21 @@ const Step1 = () => {
   )?.state?.map((e) => ({ label: e?.name, value: e?.name }));
 
   useEffect(() => {
+
     if (methods?.watch("state")) {
       const x = Options?.find(
         (e) => e.name === methods.watch("brand")
       )?.state?.find((x) => x.name === methods?.watch("state"));
-      methods.setValue("country", x?.country?.name ?? "",{shouldValidate:true});      
+      methods.setValue("country", x?.country?.name ?? "", {
+        shouldValidate: true,
+      });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [methods?.watch("state")]);
 
+
+
+ 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
@@ -37,6 +44,10 @@ const Step1 = () => {
           <FormSelect
             rules={formValidation["brand"]}
             options={brandOptions ?? []}
+            onPreviousValueChange={()=>{
+              methods.setValue("state", "");
+              methods.setValue("country", "");
+            }}
             label="Brand"
             name="brand"
           />

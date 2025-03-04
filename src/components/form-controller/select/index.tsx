@@ -17,12 +17,14 @@ interface IFormInputProps<TFieldValues extends FieldValues> {
   rules?: UseControllerProps["rules"];
   label?: string;
   options:{label:string,value:string}[]
+  onPreviousValueChange?:()=>void
 }
 
 export const FormSelect = <T extends Record<string, unknown>>({
   name,
   label,
   options,
+  onPreviousValueChange,
   ...rest
 }: IFormInputProps<T>) => {
   const methods = useFormContext();
@@ -48,8 +50,12 @@ export const FormSelect = <T extends Record<string, unknown>>({
               label={label}
               onChange={(e) => {
                 onChange(e);
+
                 if (errors[name]?.type === "required") {
                   clearErrors(name);
+                }
+                if (onPreviousValueChange) {
+                  onPreviousValueChange()
                 }
               }}
               value={value ? value : ""}
