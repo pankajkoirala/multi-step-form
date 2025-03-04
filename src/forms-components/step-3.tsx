@@ -22,7 +22,7 @@ const Step3 = () => {
         </Grid>
         <Grid size={6}>
           <FormSelect
-                      rules={formValidation["ContactPersonRelation"]}
+                      rules={formValidation["contactPersonRelation"]}
 
             options={[
               { label: "Father", value: "father" },
@@ -36,7 +36,7 @@ const Step3 = () => {
         </Grid>
         <Grid size={6}>
           <FormInput
-            rules={formValidation["ContactPersonAddress"]}
+            rules={formValidation["contactPersonAddress"]}
             label="Address"
             startAdornment={
               <InputAdornment position="start">
@@ -50,7 +50,7 @@ const Step3 = () => {
         <Grid size={6}>
           <FormInput
             label="Mobile No"
-            rules={formValidation["ContactPersonMobileNo"]}
+            rules={formValidation["contactPersonMobileNo"]}
 
             startAdornment={
               <InputAdornment position="start">
