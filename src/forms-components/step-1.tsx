@@ -1,42 +1,37 @@
 import { FormSelect } from "../components/form-controller/select";
 import FormInput from "../components/form-controller/input";
-import { InputAdornment } from "@mui/material";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
-import { deviceTypes, Options } from "../constant";
-import { useFormContext } from "react-hook-form";
-import { useEffect } from "react";
-import FlagIcon from "@mui/icons-material/Flag";
+import { brandOption,  deviceTypes } from "../constant";
+import { useFormContext, UseFormReturn } from "react-hook-form";
 import { formValidation } from "../schema/formValidation";
-const Step1 = () => {
+import { FormValues } from "../types";
+import { useGetCountryOption, useGetCountyOption, useGetStateOption } from "../hooks";
+const Step1 = (props: {
+  rootMethods?: UseFormReturn<FormValues, unknown, undefined>;
+}) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+props
+
   const methods = useFormContext();
-
-
-  const brandOptions = Options?.map((e) => ({
-    label: e?.name,
-    value: e?.name,
+  const brandOptions = brandOption?.map((e) => ({
+    label: e?.displayName,
+    value: e?.id,
   }));
-  const stateOption = Options?.find(
-    (e) => e.name === methods?.watch("brand")
-  )?.state?.map((e) => ({ label: e?.name, value: e?.name }));
 
-  useEffect(() => {
+  const countryOptions= useGetCountryOption(methods?.watch("brand"))
+  const stateOptions= useGetStateOption(methods?.watch("country"))
 
-    if (methods?.watch("state")) {
-      const x = Options?.find(
-        (e) => e.name === methods.watch("brand")
-      )?.state?.find((x) => x.name === methods?.watch("state"));
-      methods.setValue("country", x?.country?.name ?? "", {
-        shouldValidate: true,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [methods?.watch("state")]);
-
-
-
+  const countyOptions= useGetCountyOption(methods?.watch("country"))
  
+ 
+  console.log(methods?.watch());
+  
+
+
+
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
@@ -44,33 +39,52 @@ const Step1 = () => {
           <FormSelect
             rules={formValidation["brand"]}
             options={brandOptions ?? []}
-            onPreviousValueChange={()=>{
-              methods.setValue("state", "");
-              methods.setValue("country", "");
+            onExtraEvent={() => {
+              methods?.unregister("state");
+              methods?.unregister("country");
+              methods?.unregister("county");
+
             }}
             label="Brand"
             name="brand"
           />
         </Grid>
+      
         <Grid size={4}>
           <FormSelect
-            rules={formValidation["state"]}
-            options={stateOption ?? []}
-            label="Conviction State"
-            name="state"
+            rules={
+              methods?.watch("brand") !== "550e8400-e29b-41d4-a716-446655440000"
+                ? formValidation["country"]
+                : undefined
+            }
+            options={countryOptions}
+            label="Conviction Country"
+            name="country"
           />
         </Grid>
         <Grid size={4}>
-          <FormInput
-            label="Conviction Country"
-            rules={formValidation["country"]}
-            disabled
-            startAdornment={
-              <InputAdornment position="start">
-                <FlagIcon />
-              </InputAdornment>
+          <FormSelect
+            rules={
+              methods?.watch("brand") !== "550e8400-e29b-41d4-a716-446655440000"
+                ? formValidation["state"]
+                : undefined
             }
-            name="country"
+            options={stateOptions ?? []}
+            label="Conviction State"
+            name="state"
+          
+          />
+        </Grid>
+        <Grid size={4}>
+          <FormSelect
+            rules={
+              methods?.watch("brand") !== "550e8400-e29b-41d4-a716-446655440000"
+                ? formValidation["country"]
+                : undefined
+            }
+            options={countyOptions}
+            label="County"
+            name="county"
           />
         </Grid>
         <Grid size={4}>

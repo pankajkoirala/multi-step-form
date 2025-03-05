@@ -24,4 +24,5 @@ export type FormValues = {
     message: string,
     reciverMobileNo: string,
     agree: boolean,
+    county:string
   };

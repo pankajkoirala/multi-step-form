@@ -5,12 +5,14 @@ import Step1 from "../forms-components/step-1";
 import { useEffect, useState } from "react";
 import { FormStep, FormValues } from "../types";
 import FormFooter from "../forms-components/form-footer";
-import { Box, Grid2 } from "@mui/material";
+import { Box, Button, Grid2 } from "@mui/material";
 import Step2 from "../forms-components/step-2";
 import Step3 from "../forms-components/step-3";
 import Step4 from "../forms-components/step-4";
 
 function StepForm({ defaultValue }: { defaultValue?: FormValues }) {
+  const rootMethods = useForm<FormValues>();
+
   const method1 = useForm<FormValues>({
     mode: "onSubmit",
   });
@@ -26,10 +28,10 @@ function StepForm({ defaultValue }: { defaultValue?: FormValues }) {
 
   const [step, setStep] = useState<FormStep>(1);
   const stepsComponents: Record<FormStep, React.ReactNode> = {
-    1: <Step1 />,
-    2: <Step2 />,
-    3: <Step3 />,
-    4: <Step4 />,
+    1: <Step1 rootMethods={rootMethods} />,
+    2: <Step2 rootMethods={rootMethods} />,
+    3: <Step3 rootMethods={rootMethods} />,
+    4: <Step4 rootMethods={rootMethods} />,
   };
   const methodsObj = {
     1: method1,
@@ -41,18 +43,19 @@ function StepForm({ defaultValue }: { defaultValue?: FormValues }) {
   const methods = methodsObj[step];
 
   const onSubmit = (e: FormValues) => {
+    
     if (step < 4) {
       setStep((pre) => (pre + 1) as FormStep);
-    }
-    if (step === 4) {
-      console.log({
-        ...method1.getValues(),
-        ...method2.getValues(),
-        ...method3.getValues,
+      rootMethods?.reset({
+        ...rootMethods.getValues(),
         ...e,
       });
     }
+    if (step === 4) {
+      console.log(rootMethods?.getValues());
+    }
   };
+
   useEffect(() => {
     if (defaultValue) {
       method2?.reset({
@@ -83,11 +86,25 @@ function StepForm({ defaultValue }: { defaultValue?: FormValues }) {
         dateOfDelivery: defaultValue?.dateOfDelivery,
         message: defaultValue?.message,
         agree: defaultValue?.agree,
-
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
+
+  const steeperClick = async(index: number) => {
+    if (step+1===index||index<step) {
+      
+      if (index >= step) {
+        const isValid = await methods?.trigger(); // सम्पूर्ण फारमलाई validate गर्छ
+        if (isValid) {
+          setStep((pre) => (pre + 1) as FormStep);
+        }
+      } else if (index < step) {
+        setStep(index as FormStep);
+      } 
+    }
+    
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Box
@@ -101,7 +118,7 @@ function StepForm({ defaultValue }: { defaultValue?: FormValues }) {
         Multi Step Form
       </Box>
       <Grid2 container spacing={4}>
-        <HorizontalLinearStepper formStep={step} />
+        <HorizontalLinearStepper onStepClick={steeperClick} formStep={step} />
         <FormProvider {...methods}>
           <Box
             sx={{ flexGrow: 1 }}
@@ -123,6 +140,21 @@ function StepForm({ defaultValue }: { defaultValue?: FormValues }) {
           </Box>
         </FormProvider>
       </Grid2>
+      <Button
+        onClick={() => {
+          method1?.reset({
+            brand: "550e8400-e29b-41d4-a716-446655440000",
+            deviceType: "smartphone",
+            deviceName: "9843872664",
+            deviceNo: "9843872664",
+            country: "550e8400-e29b-41d4-a716-446655440000",
+            state: "550e8400-e29b-41d4-a716-446655440006",
+            county: "550e8400-e29b-41d4-a716-446655440000",
+          });
+        }}
+      >
+        Set Default Value
+      </Button>
     </Box>
   );
 }

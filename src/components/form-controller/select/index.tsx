@@ -17,14 +17,14 @@ interface IFormInputProps<TFieldValues extends FieldValues> {
   rules?: UseControllerProps["rules"];
   label?: string;
   options:{label:string,value:string}[]
-  onPreviousValueChange?:()=>void
+  onExtraEvent?:()=>void
 }
 
 export const FormSelect = <T extends Record<string, unknown>>({
   name,
   label,
   options,
-  onPreviousValueChange,
+  onExtraEvent,
   ...rest
 }: IFormInputProps<T>) => {
   const methods = useFormContext();
@@ -33,6 +33,7 @@ export const FormSelect = <T extends Record<string, unknown>>({
     formState: { errors },
     clearErrors,
     control,
+    
   } = methods;
 
   return (
@@ -47,6 +48,7 @@ export const FormSelect = <T extends Record<string, unknown>>({
             error={!!errors[name]}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
+              key={name}
               label={label}
               onChange={(e) => {
                 onChange(e);
@@ -54,15 +56,15 @@ export const FormSelect = <T extends Record<string, unknown>>({
                 if (errors[name]?.type === "required") {
                   clearErrors(name);
                 }
-                if (onPreviousValueChange) {
-                  onPreviousValueChange()
+                if (onExtraEvent) {
+                  onExtraEvent()
                 }
               }}
               value={value ? value : ""}
               {...rest}
             >
               {options?.map((e)=>(
-                <MenuItem key={e?.value} value={e?.value}>{e?.label}</MenuItem>
+                <MenuItem key={e?.value??""} value={e?.value??""}>{e?.label}</MenuItem>
               ))}
               
            

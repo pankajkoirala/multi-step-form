@@ -7,7 +7,11 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import HomeIcon from "@mui/icons-material/Home";
 import { formValidation } from "../schema/formValidation";
-const Step2 = () => {
+import { UseFormReturn } from "react-hook-form";
+import { FormValues } from "../types";
+const Step2 = (props:{ rootMethods?:UseFormReturn<FormValues, unknown, undefined>}) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  props
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
@@ -15,7 +19,7 @@ const Step2 = () => {
           <FormInput
             label="First Name"
             rules={formValidation["firstName"]}
-            name="firstName"
+            name="brand"
           />
         </Grid>
         <Grid size={4}>

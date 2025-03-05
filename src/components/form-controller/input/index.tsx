@@ -42,7 +42,7 @@ export const FormInput = <T extends Record<string, unknown>>({
           <FormControl fullWidth>
             <InputLabel htmlFor="outlined-label">{label}</InputLabel>
             <OutlinedInput
-            
+            key={name}
               id="outlined-label"
               label={label}
               error={!!errors[name]}

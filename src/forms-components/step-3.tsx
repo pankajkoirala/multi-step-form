@@ -5,10 +5,16 @@ import { InputAdornment } from "@mui/material";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 import { formValidation } from "../schema/formValidation";
+import { UseFormReturn } from "react-hook-form";
+import { FormValues } from "../types";
 
-const Step3 = () => {
+const Step3 = (props: {
+  rootMethods?: UseFormReturn<FormValues, unknown, undefined>;
+}) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  props
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
@@ -17,13 +23,11 @@ const Step3 = () => {
             rules={formValidation["contactPersonName"]}
             label="Contact Person Name"
             name="contactPersonName"
-
           />
         </Grid>
         <Grid size={6}>
           <FormSelect
-                      rules={formValidation["contactPersonRelation"]}
-
+            rules={formValidation["contactPersonRelation"]}
             options={[
               { label: "Father", value: "father" },
               { label: "Mother", value: "mother" },
@@ -51,7 +55,6 @@ const Step3 = () => {
           <FormInput
             label="Mobile No"
             rules={formValidation["contactPersonMobileNo"]}
-
             startAdornment={
               <InputAdornment position="start">
                 <PhoneAndroidIcon />

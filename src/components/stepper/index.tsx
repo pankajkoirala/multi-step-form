@@ -19,14 +19,14 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage:
-        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+      background:
+        '#31690f',
     },
   },
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage:
-        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+      background:
+        '#31690f',
     },
   },
   [`& .${stepConnectorClasses.line}`]: {
@@ -43,7 +43,7 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
 const ColorlibStepIconRoot = styled('div')<{
   ownerState: { completed?: boolean; active?: boolean };
 }>(({ theme }) => ({
-  backgroundColor: '#ccc',
+  backgroundColor: '#e3e6e1',
   zIndex: 1,
   color: '#fff',
   width: 50,
@@ -51,6 +51,7 @@ const ColorlibStepIconRoot = styled('div')<{
   display: 'flex',
   borderRadius: '50%',
   justifyContent: 'center',
+  cursor:"pointer",
   alignItems: 'center',
   ...theme.applyStyles('dark', {
     backgroundColor: theme.palette.grey[700],
@@ -59,16 +60,16 @@ const ColorlibStepIconRoot = styled('div')<{
     {
       props: ({ ownerState }) => ownerState.active,
       style: {
-        backgroundImage:
-          'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+        color:
+          '#31690f',
         boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
       },
     },
     {
       props: ({ ownerState }) => ownerState.completed,
       style: {
-        backgroundImage:
-          'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+        color:
+          '#31690f',
       },
     },
   ],
@@ -95,14 +96,18 @@ const steps = ['Step 1', 'Step 2', 'Step 3', "Step 4"];
 
 interface CustomizedSteppersType{
   formStep:FormStep
+  setFormStep?:React.Dispatch<React.SetStateAction<FormStep>>
+  onStepClick?:(e:number)=>void
+
+
 }
-export default function CustomizedSteppers({formStep}:CustomizedSteppersType) {
+export default function CustomizedSteppers({formStep,onStepClick}:CustomizedSteppersType) {
   return (
     <Stack sx={{ width: '100%' }} spacing={4}>
       <Stepper  alternativeLabel activeStep={formStep-1} connector={<ColorlibConnector />}>
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel  StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+        {steps.map((label,index) => (
+          <Step  key={label}>
+            <StepLabel onClick={()=>onStepClick&&onStepClick(index+1)}  StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
